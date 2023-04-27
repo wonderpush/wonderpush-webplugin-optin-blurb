@@ -3,7 +3,7 @@
 
     /**
      * @typedef {Object} OptinBlurb.Options
-     * @property {String} [text] - The blurb text.
+     * @property {String} [message] - The blurb text.
      * @property {String} [querySelector] - The blurb will be installed inside nodes matching this query selector.
      * @property {boolean} [insertBefore] - When true, the blurb is inserted before any other child of the parent. Defaults to false, meaning the blurb is inserted after all children.
      * @property {String} [cssPrefix] - Defaults to 'wonderpush-'.
@@ -71,7 +71,7 @@
         if (translations.hasOwnProperty(language) && translations[language][text]) return translations[language][text];
         return text;
       };
-      var text = options.text ? _(options.text) : _("Subscribe to our latest news and updates");
+      var message = options.message ? _(options.message) : _("Subscribe to our latest news and updates");
       WonderPushSDK.loadStylesheet('style.css');
 
       function Blurb() {
@@ -103,7 +103,7 @@
         var link = document.createElement('a');
         this.element.appendChild(link);
         link.href = '#';
-        link.textContent = text;
+        link.textContent = message;
         link.addEventListener('click', function(e) {
           e.preventDefault();
         }.bind(this));
