@@ -8,6 +8,7 @@
      * @property {boolean} [insertBefore] - When true, the blurb is inserted before any other child of the parent. Defaults to false, meaning the blurb is inserted after all children.
      * @property {String} [cssPrefix] - Defaults to 'wonderpush-'.
      * @property {String} [bellIconColor] - Color of the bell icon. Defaults to #ff6f61
+     * @property {String} [alignment] - 'left', 'right' or 'center'. Defaults to 'left'.
      * @property {String} [bellIcon] - URL of the bell icon. Use a transpared image whose alpha channel will be used to draw the icon, in the color specified by bellIconColor.
      * @property {String} [horizontalPadding] - Horizontal padding of blurb. Defaults to 0
      * @property {String} [verticalPadding] - Horizontal padding of blurb. Defaults to 0
@@ -76,6 +77,8 @@
       function Blurb() {
         this.element = document.createElement('div');
         this.element.classList.add(cssPrefix + 'blurb');
+        if (options.alignment === 'right') this.element.classList.add(cssPrefix + 'align-right');
+        if (options.alignment === 'center') this.element.classList.add(cssPrefix + 'align-center');
         this.element.style.display = 'none';
         this.element.style.padding = (options.verticalPadding || '0') + ' ' + (options.horizontalPadding || '0');
         if (options.imgUrl) {

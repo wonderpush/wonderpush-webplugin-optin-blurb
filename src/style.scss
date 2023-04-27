@@ -6,7 +6,18 @@ $default-bell-color: #fff;
 .wonderpush-blurb {
   display: flex;
   align-items: center;
+  &.wonderpush-align-center {
+    justify-content: center;
+  }
+  &.wonderpush-align-right {
+    flex-direction: row-reverse;
+    .wonderpush-icon-container, img {
+      margin-right: 0;
+      margin-left: 10px;
+    }
+  }
   img {
+    margin-right: 10px;
     max-width: 120px;
     max-height: 120px;
   }
