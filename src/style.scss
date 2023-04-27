@@ -1,0 +1,44 @@
+$default-width: 44px;
+$default-height: 44px;
+$default-color: #ff6f61;
+$default-bell-color: #fff;
+
+.wonderpush-blurb {
+  display: flex;
+  align-items: center;
+  img {
+    max-width: 120px;
+    max-height: 120px;
+  }
+
+  .wonderpush-icon-container {
+    margin-right: 10px;
+    cursor: pointer;
+    width: $default-width;
+    height: $default-height;
+    border-radius: $default-width / 2;
+    background: $default-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    .wonderpush-icon {
+      mask-size: contain;
+      -webkit-mask-size: contain;
+
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+
+      mask-position: center center;
+      -webkit-mask-position: center center;
+
+      background-color: $default-bell-color;
+      width: 60%;
+      height: 60%;
+      display: block; // for Shopify...
+    }
+
+  }
+
+}
