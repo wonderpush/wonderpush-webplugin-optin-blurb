@@ -101,7 +101,7 @@
           iconContainer.appendChild(icon);
           icon.classList.add(cssPrefix + 'icon');
           if (options.bellIconColor) {
-            icon.style.backgroundColor = options.bellIconColor;
+            iconContainer.style.backgroundColor = options.bellIconColor;
           }
           var assets = WonderPushSDK.getAssets();
           var iconUrl = options.bellIcon || assets.bell;
