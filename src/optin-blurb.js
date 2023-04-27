@@ -7,6 +7,8 @@
      * @property {String} [querySelector] - The blurb will be installed inside nodes matching this query selector.
      * @property {boolean} [insertBefore] - When true, the blurb is inserted before any other child of the parent. Defaults to false, meaning the blurb is inserted after all children.
      * @property {String} [cssPrefix] - Defaults to 'wonderpush-'.
+     * @property {String} [linkStyle] - Will be used as the "style" attribute of the link element;
+     * @property {String} [style] - Will be used as the "style" attribute of the container element;
      * @property {String} [bellIconColor] - Color of the bell icon. Defaults to #ff6f61
      * @property {String} [alignment] - 'left', 'right' or 'center'. Defaults to 'left'.
      * @property {String} [bellIcon] - URL of the bell icon. Use a transpared image whose alpha channel will be used to draw the icon, in the color specified by bellIconColor.
@@ -77,6 +79,11 @@
       function Blurb() {
         this.element = document.createElement('div');
         this.element.classList.add(cssPrefix + 'blurb');
+        if (options.style) {
+          for (var key in options.style) {
+            this.element.style[key] = options.style[key];
+          }
+        }
         if (options.alignment === 'right') this.element.classList.add(cssPrefix + 'align-right');
         if (options.alignment === 'center') this.element.classList.add(cssPrefix + 'align-center');
         this.element.style.display = 'none';
@@ -102,6 +109,11 @@
         }
         var link = document.createElement('a');
         this.element.appendChild(link);
+        if (options.linkStyle) {
+          for (var key in options.linkStyle) {
+            link.style[key] = options.linkStyle[key];
+          }
+        }
         link.href = '#';
         link.textContent = message;
         link.addEventListener('click', function(e) {
