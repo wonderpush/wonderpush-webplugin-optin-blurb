@@ -4,6 +4,7 @@
     /**
      * @typedef {Object} OptinBlurb.Options
      * @property {String} [message] - The blurb text.
+     * @property {boolean} [noIcon] - Do not display an icon.
      * @property {String} [querySelector] - The blurb will be installed inside nodes matching this query selector.
      * @property {boolean} [insertBefore] - When true, the blurb is inserted before any other child of the parent. Defaults to false, meaning the blurb is inserted after all children.
      * @property {String} [cssPrefix] - Defaults to 'wonderpush-'.
@@ -92,7 +93,7 @@
           var img = document.createElement('img');
           img.src = options.imgUrl;
           this.element.appendChild(img);
-        } else {
+        } else if (!options.noIcon) {
           var iconContainer = document.createElement('div');
           this.element.appendChild(iconContainer);
           iconContainer.classList.add(cssPrefix + 'icon-container');
