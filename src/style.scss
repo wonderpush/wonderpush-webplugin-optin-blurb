@@ -4,6 +4,7 @@ $default-color: #ff6f61;
 $default-bell-color: #fff;
 
 .wonderpush-blurb {
+  cursor: pointer;
   display: flex;
   align-items: center;
   &.wonderpush-align-center {
