@@ -125,6 +125,7 @@
         });
 
         this.attach = function(parent) {
+          if (!parent) return;
           parent.insertBefore(this.element, options.insertBefore ? (parent.firstChild || null) : null);
         }.bind(this);
 
@@ -142,6 +143,10 @@
       var querySelector = options.querySelector || '.wonderpush-blurb';
       var parents = options.multiple ? document.querySelectorAll(querySelector) : [document.querySelector(querySelector)];
       parents.forEach(function(parent) {
+        if (!parent) {
+          console.warn('[WonderPush] no element corresponding to selector', querySelector);
+          return;
+        }
         var blurb = new Blurb();
         blurbs.push(blurb);
         blurb.attach(parent);
