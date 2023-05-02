@@ -35,7 +35,6 @@
         return {
         };
       }
-      const assets = WonderPushSDK.getAssets();
       var translations = {
         "fr": {
           "Subscribe to our latest news and updates": "Abonnez-vous pour recevoir nos dernières offres",
