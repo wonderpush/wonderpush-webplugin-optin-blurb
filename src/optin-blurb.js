@@ -111,8 +111,8 @@
         var link = document.createElement('a');
         this.element.appendChild(link);
         if (options.linkStyle) {
-          for (var key in options.linkStyle) {
-            link.style[key] = options.linkStyle[key];
+          for (var styleKey in options.linkStyle) {
+            link.style[styleKey] = options.linkStyle[styleKey];
           }
         }
         link.href = '#';
