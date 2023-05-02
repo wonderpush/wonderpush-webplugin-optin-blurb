@@ -9,6 +9,10 @@
     "plugin",
     "optin"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/wonderpush/wonderpush-webplugin-optin-blurb.git"
+  },
   "author": "WonderPush",
   "license": "Apache-2.0",
   "devDependencies": {
