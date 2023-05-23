@@ -151,6 +151,7 @@
 
         // Detach all existing blurbs
         blurbs.forEach(x => x.detach());
+        blurbs = [];
 
         // Check that we are at the right place
         if (options.urlFilters && WonderPushSDK.currentURLPassesFilters && !WonderPushSDK.currentURLPassesFilters(options.urlFilters)) {
