@@ -4,6 +4,7 @@
     /**
      * @typedef {Object} OptinBlurb.Options
      * @property {String} [message] - The blurb text.
+     * @property {WonderPushPluginSDK.URLFilters|undefined} [urlFilters] - URL filters to apply before showing the blurb.
      * @property {boolean} [noIcon] - Do not display an icon.
      * @property {String} [querySelector] - The blurb will be installed inside nodes matching this query selector.
      * @property {boolean} [insertBefore] - When true, the blurb is inserted before any other child of the parent. Defaults to false, meaning the blurb is inserted after all children.
@@ -128,6 +129,11 @@
           parent.insertBefore(this.element, options.insertBefore ? (parent.firstChild || null) : null);
         }.bind(this);
 
+        this.detach = function() {
+          var parent = this.element.parentNode;
+          if (parent) parent.removeChild(this.element);
+        }.bind(this);
+
         this.show = function() {
           this.element.style.display = '';
         }.bind(this);
@@ -137,39 +143,74 @@
         }.bind(this);
       }
 
-      // Create the blurb(s)
       var blurbs = [];
-      var querySelector = options.querySelector || '.wonderpush-blurb';
-      var parents = options.multiple ? document.querySelectorAll(querySelector) : [document.querySelector(querySelector)];
-      parents.forEach(function(parent) {
-        if (!parent) {
-          console.warn('[WonderPush] no element corresponding to selector', querySelector);
+
+      function recreateBlurbs() {
+
+        WonderPushSDK.logDebug('recreateBlurbs');
+
+        // Detach all existing blurbs
+        blurbs.forEach(x => x.detach());
+
+        // Check that we are at the right place
+        if (options.urlFilters && WonderPushSDK.currentURLPassesFilters && !WonderPushSDK.currentURLPassesFilters(options.urlFilters)) {
+          WonderPushSDK.logDebug('Current URL does not match url filters', options.urlFilters);
           return;
         }
-        var blurb = new Blurb();
-        blurbs.push(blurb);
-        blurb.attach(parent);
-      });
+
+        // Create and attach blurbs
+        var querySelector = options.querySelector || '.wonderpush-blurb';
+        var parents = options.multiple ? document.querySelectorAll(querySelector) : [document.querySelector(querySelector)];
+        parents.forEach(function(parent) {
+          if (!parent) {
+            WonderPushSDK.logWarn('No element corresponding to selector', querySelector);
+            return;
+          }
+          var blurb = new Blurb();
+          blurbs.push(blurb);
+          blurb.attach(parent);
+        });
+
+        // Show / hide them depending on the current subscription state
+        if (WonderPushSDK.Notification.getSubscriptionState() === WonderPushSDK.SubscriptionState.SUBSCRIBED) {
+          blurbs.forEach(function(blurb) { blurb.hide(); });
+        } else {
+          blurbs.forEach(function(blurb) { blurb.show(); });
+        }
+
+      }
 
       // Handle subscription state changes
       window.addEventListener('WonderPushEvent', function (event) {
         if (!event.detail || !event.detail.state || event.detail.name !== 'subscription') return;
         if (event.detail.state === WonderPushSDK.SubscriptionState.UNSUBSCRIBED) {
+          WonderPushSDK.logDebug('Subscription state changed to unsubscribed, showing blurbs');
           blurbs.forEach(function(blurb) { blurb.show(); });
         }
         if (event.detail.state === WonderPushSDK.SubscriptionState.SUBSCRIBED) {
+          WonderPushSDK.logDebug('Subscription state changed to subscribed, hiding blurbs');
           blurbs.forEach(function(blurb) { blurb.hide(); });
         }
         if (event.detail.state === WonderPushSDK.SubscriptionState.DENIED) {
+          WonderPushSDK.logDebug('Subscription state changed to denied, showing blurbs');
           blurbs.forEach(function(blurb) { blurb.show(); });
         }
       }.bind(this));
 
-      // Main program
-      if (WonderPushSDK.Notification.getSubscriptionState() === WonderPushSDK.SubscriptionState.SUBSCRIBED) {
-        blurbs.forEach(function(blurb) { blurb.hide(); });
+      // ! Listen to a new URL
+      var url = window.location.href;
+      setInterval(() => {
+        if (window.location.href === url) return;
+        url = window.location.href;
+        WonderPushSDK.logDebug('Change of URL detected, recreate blurbs');
+        recreateBlurbs();
+      }, 1000);
+
+      // ! Listen to the end of window loading
+      if (window.document.readyState === 'complete') {
+        recreateBlurbs();
       } else {
-        blurbs.forEach(function(blurb) { blurb.show(); });
+        window.addEventListener("load", recreateBlurbs);
       }
     }
   });
