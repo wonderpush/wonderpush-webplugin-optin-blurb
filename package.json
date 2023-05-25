@@ -1,6 +1,6 @@
 {
   "name": "wonderpush-webplugin-optin-blurb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "WonderPush Web SDK plugin",
   "main": "src/optin-blurb.js",
   "keywords": [
